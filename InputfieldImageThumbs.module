@@ -1,0 +1,35 @@
+<?php
+/**
+ * Image Create Thumbs (1.0.0)
+ * This module creates thumbnails during image upload.
+ *
+ * @author soma, charger
+ *
+ * ProcessWire 2.x
+ * Copyright (C) 2011 by Ryan Cramer
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ *
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+
+class InputfieldImageThumbs extends WireData implements Module {
+
+    public function init() {
+        $this->addHookAfter('InputfieldFile::fileAdded', $this, 'sizeImage');
+    }
+
+    public function sizeImage($event) {
+        $inputfield = $event->object;
+        if($inputfield->name != 'images') return;
+        $image = $event->argumentsByName("pagefile");
+
+        $widths = explode(",", $this->imageWidths, 10); // convert comma separated list to array, limit to 10 values
+        $widths = array_filter($widths, 'ctype_digit'); // keep only numeric entries in the array
+        
+        foreach($widths as $width) {
+            $image->size($width,0); // generate image for each defined width
+        }
+    }
+}

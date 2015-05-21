@@ -1,0 +1,13 @@
+{
+    "title": "Image Create Thumbs",
+    "version": "1.0.0",
+    "summary": "This module creates thumbnails during image upload.",
+    "author": "soma, charger",
+    "autoload": true,
+    "singular": true,
+    "permanent": false,
+    "requires": [
+        "PHP>=5.4.0",
+        "ProcessWire>=2.5.5"
+    ]
+}
