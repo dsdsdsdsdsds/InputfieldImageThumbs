@@ -17,13 +17,16 @@
 class InputfieldImageThumbs extends WireData implements Module {
 
     public function init() {
-        $this->addHookAfter('InputfieldFile::fileAdded', $this, 'sizeImage');
+        $this->addHookAfter('InputfieldFile::fileAdded', $this, 'createThumbs');
     }
 
-    public function sizeImage($event) {
+    public function createThumbs($event) {
         $inputfield = $event->object;
-        if($inputfield->name != 'images') return;
-        $image = $event->argumentsByName("pagefile");
+        $image = $event->arguments("pagefile");
+        
+        $allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF); // allowed image formats
+        $detectedType = exif_imagetype($image->filename); // check if file is an image
+        if(!in_array($detectedType, $allowedTypes)) return; // if not, exit
 
         $widths = explode(",", $this->imageWidths, 10); // convert comma separated list to array, limit to 10 values
         $widths = array_filter($widths, 'ctype_digit'); // keep only numeric entries in the array
