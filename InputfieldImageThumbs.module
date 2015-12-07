@@ -24,7 +24,8 @@ class InputfieldImageThumbs extends WireData implements Module {
         $inputfield = $event->object;
         $image = $event->arguments("pagefile");
         
-        $allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF); // allowed image formats
+        //$allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF); // allowed image formats
+        $allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG); // allowed image formats
         $detectedType = exif_imagetype($image->filename); // check if file is an image
         if(!in_array($detectedType, $allowedTypes)) return; // if not, exit
 
